@@ -1,0 +1,27 @@
+name: Update Lunch Menu
+on:
+  schedule:
+    - cron: '0 8 * * 1-5' # Körs kl 09:00 svensk tid, mån-fre
+  workflow_dispatch: # Gör att du kan starta den manuellt
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+      - name: Run scraper
+        run: python update_lunch.py
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'Lunch Bot'
+          git config --global user.email 'bot@github.com'
+          git add index.html
+          git commit -m "Uppdaterade lunchmenyn" || exit 0
+          git push
+          
