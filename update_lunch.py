@@ -3,7 +3,7 @@ import datetime
 def get_menu():
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     
-    # Uppdaterad data för alla sex restauranger
+    # Här är alla dina sex restauranger samlade
     menu_data = [
         {
             "name": "1. Blues Restaurang",
@@ -51,21 +51,21 @@ def get_menu():
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Lunchmenyn</title>
         <style>
-            body {{ font-family: -apple-system, system-ui, sans-serif; padding: 10px; background: #f0f2f5; color: #1c1e21; }}
-            .header {{ text-align: center; padding: 20px 0; }}
-            h1 {{ margin: 0; font-size: 1.5em; color: #1c1e21; }}
-            .update-time {{ font-size: 0.8em; color: #65676b; }}
-            .card {{ background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }}
+            body {{ font-family: -apple-system, sans-serif; padding: 10px; background: #f0f2f5; color: #1c1e21; }}
+            .header {{ text-align: center; padding: 15px 0; }}
+            h1 {{ margin: 0; font-size: 1.4em; }}
+            .update-time {{ font-size: 0.75em; color: #65676b; margin-bottom: 15px; }}
+            .card {{ background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }}
             h2 {{ color: #1877f2; margin: 0 0 4px 0; font-size: 1.1em; }}
-            .info {{ font-size: 0.8em; color: #65676b; margin-bottom: 12px; border-bottom: 1px solid #ebedf0; padding-bottom: 8px; }}
-            ul {{ padding-left: 20px; margin: 10px 0; font-size: 0.95em; color: #050505; }}
-            li {{ margin-bottom: 6px; }}
-            .btn {{ display: block; background: #e7f3ff; color: #1877f2; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.9em; margin-top: 12px; }}
+            .info {{ font-size: 0.8em; color: #65676b; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }}
+            ul {{ padding-left: 18px; margin: 8px 0; font-size: 0.9em; }}
+            li {{ margin-bottom: 4px; }}
+            .btn {{ display: block; background: #e7f3ff; color: #1877f2; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.85em; margin-top: 10px; }}
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>🍴 Mina Lunchställen</h1>
+            <h1>🍴 Lunch i Johanneshov</h1>
             <div class="update-time">Uppdaterad: {now}</div>
         </div>
     """
