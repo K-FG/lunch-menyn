@@ -26,9 +26,9 @@ FIRECRAWL_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
 
 # Restaurangerna från https://bit.ly/lunchwsp (sites.google.com/view/lunchwsp)
 RESTAURANTS = [
+    {"name": "BankOmat Seaside", "url": "https://restaurangbankomat.se/lunch/", "source": "html"},
     {"name": "GHB German Beer Hall", "url": "https://www.kvartersmenyn.se/index.php/rest/16965", "source": "firecrawl"},
     {"name": "Tant Maja & Fröken Emilia", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images"},
-    {"name": "BankOmat Seaside", "url": "https://restaurangbankomat.se/lunch/", "source": "html"},
     {"name": "Indian Garden", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block"},
     {"name": "Haandi curry & streetfood", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf"},
     {"name": "Marrakech", "url": "https://marrakechrestaurang.se/meny", "source": "info",
