@@ -206,17 +206,26 @@ def get_menu():
         .note {{ color: #666; font-size: 0.9rem; }}
         .btn {{ display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }}
         .header {{ text-align: center; margin-bottom: 30px; }}
+        .updated {{ color: #666; font-size: 0.85rem; margin-top: -8px; }}
+        .standard {{ color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }}
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🍴 Lunch – WSP-listan</h1>
+        <h1>🍴 Lunch Marievik</h1>
         <p>{today} {now.strftime('%d %b %Y')}</p>
+        <p class="updated">Uppdaterad {now.strftime('%d %b %Y kl %H:%M')}</p>
     </div>
 """
     cards = "".join(build_card(r, today) for r in RESTAURANTS)
+    standard = (
+        "<p class='standard'>Menyerna hämtas automatiskt från restaurangernas egna sidor "
+        "vardagar kl 09:00. Kontrollera alltid hos restaurangen innan du går dit. "
+        "Vi ansvarar inte för felaktigheter i menyerna. Klicka på \"Visa meny\" för att "
+        "se hela menyn på restaurangens sida.</p>"
+    )
     with open("index.html", "w", encoding="utf-8") as f:
-        f.write(head + cards + "</body></html>")
+        f.write(head + cards + standard + "</body></html>")
 
 
 if __name__ == "__main__":
