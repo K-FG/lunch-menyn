@@ -1,63 +1,203 @@
+"""Bygger index.html med dagens lunch för restaurangerna på WSP-listan.
+
+Källor:
+- Statiska sidor och PDF hämtas med requests.
+- Sidor som renderas med JavaScript (GHB, Tant Maja, Indian Garden) hämtas
+  via Firecrawl-API:t. Kräver hemligheten FIRECRAWL_API_KEY. Saknas den visas
+  bara en länk för dessa restauranger.
+- Om något fel uppstår för en restaurang visas länken och ett meddelande,
+  så att resten av sidan ändå byggs.
+"""
+import datetime
+import html
+import io
+import os
+import re
+
 import requests
 from bs4 import BeautifulSoup
-import datetime
+from pypdf import PdfReader
+from zoneinfo import ZoneInfo
 
-def get_menu():
-    now = datetime.datetime.now()
-    # Hanterar svensk tid och dag
-    weekdays = ["Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"]
-    today_swe = weekdays[now.weekday()]
-    
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0'}
-    
-    restaurants = [
-        {"name": "Blues Restaurang", "url": "https://bluesrestaurang.se/veckans-lunchmeny"},
-        {"name": "Noll Ettan", "url": "https://nollettan.se/"},
-        {"name": "Vi går till Marie", "url": "https://tillmarie.se/meny/#lunch"},
-        {"name": "Mukbang (Food & Co)", "url": "https://www.compass-group.se/restauranger-och-menyer/foodandco/mukbang/"},
-        {"name": "O'Learys Tolv", "url": "https://olearys.com/sv-se/tolv-stockholm/food/lunchmeny/"},
-        {"name": "Partymakarna", "url": "https://www.partymakarna.se/#alacarte"}
-    ]
+TZ = ZoneInfo("Europe/Stockholm")
+WEEKDAYS = ["Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"]
+UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0"}
+FIRECRAWL_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
 
-    html_head = f"""
-    <!DOCTYPE html>
-    <html lang="sv">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            body {{ font-family: -apple-system, sans-serif; padding: 15px; background: #f8f9fa; color: #333; }}
-            .card {{ background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 5px solid #007bff; }}
-            h2 {{ margin: 0 0 10px 0; font-size: 1.2rem; color: #0056b3; }}
-            ul {{ padding-left: 20px; margin: 0; }}
-            li {{ margin-bottom: 8px; font-size: 0.95rem; }}
-            .btn {{ display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }}
-            .header {{ text-align: center; margin-bottom: 30px; }}
-        </style>
-    </head>
-    <body>
-        <div class="header">
-            <h1>🍴 Lunch i Johanneshov</h1>
-            <p>{today_swe} {now.strftime('%d %b')}</p>
-        </div>
+# Restaurangerna från https://bit.ly/lunchwsp (sites.google.com/view/lunchwsp)
+RESTAURANTS = [
+    {"name": "GHB German Beer Hall", "url": "https://www.kvartersmenyn.se/index.php/rest/16965", "source": "firecrawl"},
+    {"name": "Tant Maja & Fröken Emilia", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl"},
+    {"name": "BankOmat Seaside", "url": "https://restaurangbankomat.se/lunch/", "source": "html"},
+    {"name": "Indian Garden", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block"},
+    {"name": "Haandi curry & streetfood", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf"},
+    {"name": "Marrakech", "url": "https://marrakechrestaurang.se/meny", "source": "info",
+     "info": "Lunchbuffé efter vikt, 19,90 kr per hekto, mån–fre 10.30–13.30. Bröd och kaffe ingår."},
+    {"name": "Mackverket", "url": "https://www.mackverket.se/surdegsmackor-stockholm/", "source": "info",
+     "info": "Surdegsmackor, inte en dagsmeny. Samma sortiment varje dag."},
+]
+
+DAY_RE = re.compile(r"^\W*(Måndag|Tisdag|Onsdag|Torsdag|Fredag|Lördag|Söndag)\W*$", re.IGNORECASE | re.MULTILINE)
+SKIP_RE = re.compile(
+    r"kr\b|:-|Ingår|Hemlagad|ALLERGEN|!\[|^\[|https?://|vecka|öppet|pris|©|cookie|powered|"
+    r"^\d{1,2} \w+\.?$|^\W*$",
+    re.IGNORECASE,
+)
+
+
+def fetch_html_text(url):
+    r = requests.get(url, headers=UA, timeout=30)
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+    for tag in soup(["script", "style", "noscript"]):
+        tag.decompose()
+    return soup.get_text("\n")
+
+
+def fetch_pdf_text(url):
+    r = requests.get(url, headers=UA, timeout=30)
+    r.raise_for_status()
+    reader = PdfReader(io.BytesIO(r.content))
+    return "\n".join(page.extract_text() or "" for page in reader.pages)
+
+
+def fetch_firecrawl(url):
+    if not FIRECRAWL_KEY:
+        raise RuntimeError("FIRECRAWL_API_KEY saknas")
+    r = requests.post(
+        "https://api.firecrawl.dev/v1/scrape",
+        headers={"Authorization": f"Bearer {FIRECRAWL_KEY}"},
+        json={"url": url, "formats": ["markdown"], "onlyMainContent": True},
+        timeout=120,
+    )
+    r.raise_for_status()
+    return r.json()["data"]["markdown"]
+
+
+def day_section(text, day):
+    """Returnerar den längsta textbiten under veckodagens rubrik.
+
+    Någon sida listar veckodagarna i en meny före själva rätterna, därför tar
+    vi den längsta sektionen i stället för den första förekomsten.
     """
+    matches = list(DAY_RE.finditer(text))
+    best = ""
+    for i, m in enumerate(matches):
+        if m.group(1).lower() != day.lower():
+            continue
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        section = text[m.end():end]
+        if len(section) > len(best):
+            best = section
+    return best or None
 
-    body_content = ""
-    for rest in restaurants:
-        items = "<li>Klicka nedan för att se dagens meny.</li>"
-        # Här kan vi bygga ut med Gemini API-anrop senare för Hostinger-versionen
-        
-        body_content += f"""
+
+def lunch_block_items(text):
+    """Indian Garden: lunchrätterna står under '## LUNCH' och är desamma varje vardag."""
+    i = text.find("## LUNCH")
+    if i < 0:
+        return []
+    seg = text[i + len("## LUNCH"):]
+    nxt = re.search(r"\n## ", seg)
+    if nxt:
+        seg = seg[:nxt.start()]
+    names = re.findall(r"^#{3,6} (.+)$", seg, re.MULTILINE)
+    out = []
+    for n in names:
+        n = re.sub(r"\s+", " ", n).strip()
+        if n in out:  # lunchdelen slutar när samma rätt börjar om (nästa avsnitt)
+            break
+        out.append(n)
+    return out[:15]
+
+
+def dish_lines(section):
+    out = []
+    for line in section.splitlines():
+        t = re.sub(r"[*_#>]+", " ", line)
+        t = re.sub(r"\s+", " ", t).strip(" -·")
+        if len(t) < 4 or len(t) > 160 or SKIP_RE.search(t):
+            continue
+        if t not in out:
+            out.append(t)
+    return out[:15]
+
+
+def build_card(rest, today):
+    name = html.escape(rest["name"])
+    url = html.escape(rest["url"])
+    items = []
+    note = ""
+    try:
+        if rest["source"] == "info":
+            note = rest["info"]
+        elif rest["source"] == "pdf":
+            items = dish_lines(fetch_pdf_text(rest["url"]))
+            note = "Menyn är en PDF från juni 2025. Kontrollera att den fortfarande gäller."
+        elif rest["source"] == "html":
+            section = day_section(fetch_html_text(rest["url"]), today)
+            items = dish_lines(section) if section else []
+        elif rest["source"] == "firecrawl_block":
+            if not FIRECRAWL_KEY:
+                note = "Dagsmenyn kräver FIRECRAWL_API_KEY. Öppna länken för menyn."
+            else:
+                items = lunch_block_items(fetch_firecrawl(rest["url"]))
+                note = "Samma lunchrätter varje vardag, 11–14."
+        elif rest["source"] == "firecrawl":
+            if not FIRECRAWL_KEY:
+                note = "Dagsmenyn kräver FIRECRAWL_API_KEY. Öppna länken för menyn."
+            else:
+                section = day_section(fetch_firecrawl(rest["url"]), today)
+                items = dish_lines(section) if section else []
+    except Exception as exc:  # en restaurang får inte stoppa resten
+        note = f"Kunde inte läsa menyn ({type(exc).__name__}). Öppna länken."
+
+    if rest["source"] not in ("info", "pdf") and not items and not note:
+        note = "Ingen dagsmeny hittades för idag. Öppna länken."
+
+    body = ""
+    if items:
+        body = "<ul>" + "".join(f"<li>{html.escape(i)}</li>" for i in items) + "</ul>"
+    if note:
+        body += f"<p class='note'>{html.escape(note)}</p>"
+    return f"""
         <div class="card">
-            <h2>{rest['name']}</h2>
-            <ul>{items}</ul>
-            <a href="{rest['url']}" class="btn">Visa Hemsida</a>
+            <h2>{name}</h2>
+            {body}
+            <a href="{url}" class="btn">Visa meny</a>
         </div>
         """
 
+
+def get_menu():
+    now = datetime.datetime.now(TZ)
+    today = WEEKDAYS[now.weekday()]
+    head = f"""<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {{ font-family: -apple-system, sans-serif; padding: 15px; background: #f8f9fa; color: #333; }}
+        .card {{ background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 5px solid #007bff; }}
+        h2 {{ margin: 0 0 10px 0; font-size: 1.2rem; color: #0056b3; }}
+        ul {{ padding-left: 20px; margin: 0; }}
+        li {{ margin-bottom: 8px; font-size: 0.95rem; }}
+        .note {{ color: #666; font-size: 0.9rem; }}
+        .btn {{ display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }}
+        .header {{ text-align: center; margin-bottom: 30px; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🍴 Lunch – WSP-listan</h1>
+        <p>{today} {now.strftime('%d %b %Y')}</p>
+    </div>
+"""
+    cards = "".join(build_card(r, today) for r in RESTAURANTS)
     with open("index.html", "w", encoding="utf-8") as f:
-        f.write(html_head + body_content + "</body></html>")
+        f.write(head + cards + "</body></html>")
+
 
 if __name__ == "__main__":
     get_menu()
-        
