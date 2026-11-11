@@ -27,7 +27,7 @@ FIRECRAWL_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
 # Restaurangerna från https://bit.ly/lunchwsp (sites.google.com/view/lunchwsp)
 RESTAURANTS = [
     {"name": "GHB German Beer Hall", "url": "https://www.kvartersmenyn.se/index.php/rest/16965", "source": "firecrawl"},
-    {"name": "Tant Maja & Fröken Emilia", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl"},
+    {"name": "Tant Maja & Fröken Emilia", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images"},
     {"name": "BankOmat Seaside", "url": "https://restaurangbankomat.se/lunch/", "source": "html"},
     {"name": "Indian Garden", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block"},
     {"name": "Haandi curry & streetfood", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf"},
@@ -111,6 +111,20 @@ def lunch_block_items(text):
     return out[:15]
 
 
+def image_names(section):
+    """Tant Maja: rättens namn står på raden direkt efter bildraden ![...](...)."""
+    lines = [l.strip() for l in section.splitlines()]
+    out = []
+    for i, line in enumerate(lines):
+        if line.startswith("!["):
+            for nxt in lines[i + 1:]:
+                if nxt:
+                    if nxt not in out:
+                        out.append(nxt)
+                    break
+    return out[:15]
+
+
 def dish_lines(section):
     out = []
     for line in section.splitlines():
@@ -143,6 +157,12 @@ def build_card(rest, today):
             else:
                 items = lunch_block_items(fetch_firecrawl(rest["url"]))
                 note = "Samma lunchrätter varje vardag, 11–14."
+        elif rest["source"] == "firecrawl_images":
+            if not FIRECRAWL_KEY:
+                note = "Dagsmenyn kräver FIRECRAWL_API_KEY. Öppna länken för menyn."
+            else:
+                section = day_section(fetch_firecrawl(rest["url"]), today)
+                items = image_names(section) if section else []
         elif rest["source"] == "firecrawl":
             if not FIRECRAWL_KEY:
                 note = "Dagsmenyn kräver FIRECRAWL_API_KEY. Öppna länken för menyn."
