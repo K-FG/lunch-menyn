@@ -26,7 +26,7 @@ FIRECRAWL_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
 
 # Restaurangerna från https://bit.ly/lunchwsp (sites.google.com/view/lunchwsp)
 RESTAURANTS = [
-    {"name": "BankOmat Seaside", "brand": "#4a4a48", "url": "https://restaurangbankomat.se/lunch/", "source": "html", "wordmark": "BANK OMAT"},
+    {"name": "BankOmat Seaside", "brand": "#4a4a48", "url": "https://restaurangbankomat.se/lunch/", "source": "html", "wordmark": "BankOmat", "wordmark_style": "plain"},
     {"name": "GHB German Beer Hall", "brand": "#b7791f", "url": "https://www.kvartersmenyn.se/index.php/rest/16965", "source": "firecrawl", "logo": "https://www.kvmcdn.se/images/logos_small/16965.jpg"},
     {"name": "Tant Maja & Fröken Emilia", "brand": "#2f6f6a", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images", "logo": "https://www.tantmajaochfrokenemilia.se/tenants/tantmaja/logo.jpg"},
     {"name": "Indian Garden", "brand": "#8a3b1f", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block", "logo": "https://indiangarden.nu/image/catalog/Background/logo.png", "chip": True},
@@ -182,7 +182,7 @@ def build_card(rest, today):
         body += f"<p class='note'>{html.escape(note)}</p>"
     initials = "".join(w[0] for w in rest["name"].split()[:2]).upper()
     if rest.get("wordmark"):
-        wm_cls = "wordmark serif" if rest.get("wordmark_style") == "serif" else "wordmark"
+        wm_cls = {"serif": "wordmark serif", "plain": "wordmark plain"}.get(rest.get("wordmark_style"), "wordmark")
         initials = None
     logo = ""
     if rest.get("logo"):
@@ -225,6 +225,7 @@ def get_menu():
         .card h2 {{ color: var(--fg-h, #ecebe6); }}
         .card .btn {{ background: var(--brand, #2b5f8f); color: #fff; }}
         .wordmark {{ display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 6px; background: var(--brand, #4a4a48); color: #fff; font-weight: 800; letter-spacing: .08em; font-size: .72rem; text-transform: uppercase; margin-right: 8px; vertical-align: middle; white-space: nowrap; box-shadow: inset 0 -6px 0 rgba(255,255,255,.12); }}
+        .wordmark.plain {{ text-transform: none; letter-spacing: .01em; font-size: .85rem; font-weight: 800; }}
         .wordmark.serif {{ font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; letter-spacing: 0; font-size: .85rem; text-transform: none; }}
         .badge {{ display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--brand, #2c3e50); color: #fff; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }}
         .logo {{ width: auto; height: 28px; max-width: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }}
