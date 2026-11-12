@@ -28,7 +28,7 @@ FIRECRAWL_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
 RESTAURANTS = [
     {"name": "BankOmat Seaside", "brand": "#4a4a48", "url": "https://restaurangbankomat.se/lunch/", "source": "html", "wordmark": "BankOmat", "wordmark_style": "plain"},
     {"name": "GHB German Beer Hall", "brand": "#b7791f", "url": "https://www.kvartersmenyn.se/index.php/rest/16965", "source": "firecrawl", "logo": "https://www.kvmcdn.se/images/logos_small/16965.jpg"},
-    {"name": "Tant Maja & Fröken Emilia", "brand": "#2f6f6a", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images", "logo": "https://www.tantmajaochfrokenemilia.se/tenants/tantmaja/logo.jpg"},
+    {"name": "Tant Maja & Fröken Emilia", "brand": "#2f6f6a", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images", "logo": "logos/tant-maja.jpg"},
     {"name": "Indian Garden", "brand": "#8a3b1f", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block", "logo": "https://indiangarden.nu/image/catalog/Background/logo.png", "chip": True},
     {"name": "Haandi curry & streetfood", "brand": "#890405", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf", "logo": "https://haandi.se/favicon.ico", "chip": True},
     {"name": "Marrakech", "brand": "#2a1f14", "url": "https://marrakechrestaurang.se/meny", "source": "info", "logo": "https://marrakechrestaurang.se/assets/marrakech-logo-CE9fafJE.png",
