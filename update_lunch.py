@@ -201,42 +201,81 @@ def build_card(rest, today):
         """
 
 
+THEME_JS = """<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById("themeToggle");
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function current() {
+    var t = root.getAttribute("data-theme");
+    if (t === "auto") return (mq && mq.matches) ? "dark" : "light";
+    return t;
+  }
+  function label() { btn.textContent = current() === "dark" ? "Ljust tema" : "Mörkt tema"; }
+  function apply(t) { root.setAttribute("data-theme", t); label(); }
+  var saved = null;
+  try { saved = localStorage.getItem("lunch-theme"); } catch (e) {}
+  if (saved === "light" || saved === "dark") { apply(saved); } else { label(); }
+  btn.addEventListener("click", function () {
+    var next = current() === "dark" ? "light" : "dark";
+    try { localStorage.setItem("lunch-theme", next); } catch (e) {}
+    apply(next);
+  });
+})();
+</script>
+"""
+
+
 def get_menu():
     now = datetime.datetime.now(TZ)
     today = WEEKDAYS[now.weekday()]
     head = f"""<!DOCTYPE html>
-<html lang="sv">
+<html lang="sv" data-theme="auto">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {{ font-family: -apple-system, sans-serif; padding: 15px; background: #161615; color: #ecebe6; }}
-        .card {{ background: #22221f; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border-left: 5px solid #8fbde3; }}
-        h2 {{ margin: 0 0 10px 0; font-size: 1.2rem; color: #8fbde3; }}
+        :root {{
+            --bg: #f8f9fa; --fg: #333; --card: #ffffff; --heading: #222; --accent: #007bff;
+            --muted: #666; --btn-text: #ffffff; --border: rgba(0,0,0,0.1); --shadow: rgba(0,0,0,0.1);
+            color-scheme: light;
+        }}
+        :root[data-theme="dark"] {{
+            --bg: #161615; --fg: #ecebe6; --card: #22221f; --heading: #8fbde3; --accent: #8fbde3;
+            --muted: #a6a39a; --btn-text: #ecebe6; --border: rgba(255,255,255,0.08); --shadow: rgba(0,0,0,0.4);
+            color-scheme: dark;
+        }}
+        @media (prefers-color-scheme: dark) {{
+            :root[data-theme="auto"] {{
+                --bg: #161615; --fg: #ecebe6; --card: #22221f; --heading: #8fbde3; --accent: #8fbde3;
+                --muted: #a6a39a; --btn-text: #ecebe6; --border: rgba(255,255,255,0.08); --shadow: rgba(0,0,0,0.4);
+                color-scheme: dark;
+            }}
+        }}
+        body {{ font-family: -apple-system, sans-serif; padding: 15px; background: var(--bg); color: var(--fg); margin: 0; }}
+        .card {{ background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px var(--shadow); border-left: 5px solid var(--brand, var(--accent)); }}
+        h2 {{ margin: 0 0 10px 0; font-size: 1.2rem; color: var(--heading); }}
         ul {{ padding-left: 20px; margin: 0; }}
         li {{ margin-bottom: 8px; font-size: 0.95rem; }}
-        .note {{ color: #a6a39a; font-size: 0.9rem; }}
-        .btn {{ display: block; background: #2b5f8f; color: #ecebe6; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }}
+        .note {{ color: var(--muted); font-size: 0.9rem; }}
+        .btn {{ display: block; background: var(--brand, var(--accent)); color: var(--btn-text); text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }}
         .header {{ text-align: center; margin-bottom: 30px; }}
-        :root {{ color-scheme: dark; }}
+        .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: -8px; }}
+        .standard {{ color: var(--muted); font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--border); }}
         .grid {{ display: grid; grid-template-columns: 1fr; gap: 0 20px; max-width: 1200px; margin: 0 auto; }}
         .grid .card {{ margin-bottom: 20px; }}
-        .card {{ border-left-color: var(--brand, #8fbde3); }}
-        .card h2 {{ color: var(--fg-h, #ecebe6); }}
-        .card .btn {{ background: var(--brand, #2b5f8f); color: #fff; }}
+        @media (min-width: 900px) {{ .grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
+        .card h2 {{ color: var(--heading); }}
         .wordmark {{ display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 6px; background: var(--brand, #4a4a48); color: #fff; font-weight: 800; letter-spacing: .08em; font-size: .72rem; text-transform: uppercase; margin-right: 8px; vertical-align: middle; white-space: nowrap; box-shadow: inset 0 -6px 0 rgba(255,255,255,.12); }}
         .wordmark.plain {{ text-transform: none; letter-spacing: .01em; font-size: .85rem; font-weight: 800; }}
         .wordmark.serif {{ font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; letter-spacing: 0; font-size: .85rem; text-transform: none; }}
         .badge {{ display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--brand, #2c3e50); color: #fff; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }}
         .logo {{ width: auto; height: 28px; max-width: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }}
-        .logo {{ background: var(--brand, #2c3e50); border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }}
-        .logo.chip {{ background: #f4f1ea; }}
-        @media (min-width: 900px) {{ .grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
-        .updated {{ color: #666; font-size: 0.85rem; margin-top: -8px; }}
-        .standard {{ color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }}
+        .logo.chip {{ background: #f4f1ea; border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }}
+        .theme-toggle {{ position: fixed; top: 12px; right: 12px; border: 1px solid var(--border); background: var(--card); color: var(--fg); border-radius: 999px; padding: 6px 12px; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 6px var(--shadow); z-index: 5; }}
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="themeToggle" type="button">Mörkt tema</button>
     <div class="header">
         <h1>🍴 Lunch Marievik</h1>
         <p>{today} {now.strftime('%d %b %Y')}</p>
@@ -251,7 +290,7 @@ def get_menu():
         "se hela menyn på restaurangens sida.</p>"
     )
     with open("index.html", "w", encoding="utf-8") as f:
-        f.write(head + cards + standard + "</body></html>")
+        f.write(head + cards + standard + THEME_JS + "</body></html>")
 
 
 if __name__ == "__main__":
