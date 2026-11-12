@@ -26,11 +26,11 @@ FIRECRAWL_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
 
 # Restaurangerna från https://bit.ly/lunchwsp (sites.google.com/view/lunchwsp)
 RESTAURANTS = [
-    {"name": "BankOmat Seaside", "url": "https://restaurangbankomat.se/lunch/", "source": "html", "logo": "https://restaurangbankomat.se/wp-content/uploads/2022/11/bankomat-logo-transparent.png"},
+    {"name": "BankOmat Seaside", "url": "https://restaurangbankomat.se/lunch/", "source": "html"},
     {"name": "GHB German Beer Hall", "url": "https://www.kvartersmenyn.se/index.php/rest/16965", "source": "firecrawl"},
     {"name": "Tant Maja & Fröken Emilia", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images", "logo": "https://www.tantmajaochfrokenemilia.se/tenants/tantmaja/logo.jpg"},
-    {"name": "Indian Garden", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block", "logo": "https://indiangarden.nu/image/catalog/Background/logo.png"},
-    {"name": "Haandi curry & streetfood", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf", "logo": "https://haandi.se/favicon.ico"},
+    {"name": "Indian Garden", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block", "logo": "https://indiangarden.nu/image/catalog/Background/logo.png", "chip": True},
+    {"name": "Haandi curry & streetfood", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf", "logo": "https://haandi.se/favicon.ico", "chip": True},
     {"name": "Marrakech", "url": "https://marrakechrestaurang.se/meny", "source": "info", "logo": "https://marrakechrestaurang.se/assets/marrakech-logo-CE9fafJE.png",
      "info": "Lunchbuffé efter vikt, 19,90 kr per hekto, mån–fre 10.30–13.30. Bröd och kaffe ingår."},
     {"name": "Mackverket", "url": "https://www.mackverket.se/surdegsmackor-stockholm/", "source": "info",
@@ -40,7 +40,7 @@ RESTAURANTS = [
 DAY_RE = re.compile(r"^\W*(Måndag|Tisdag|Onsdag|Torsdag|Fredag|Lördag|Söndag)\W*$", re.IGNORECASE | re.MULTILINE)
 SKIP_RE = re.compile(
     r"kr\b|:-|Ingår|Hemlagad|ALLERGEN|!\[|^\[|https?://|vecka|öppet|pris|©|cookie|powered|"
-    r"^\d{1,2} \w+\.?$|^\W*$",
+    r"^\d{1,2} \w+\.?$|^\W*$|^\d+:?\W*$",
     re.IGNORECASE,
 )
 
@@ -183,7 +183,8 @@ def build_card(rest, today):
     initials = "".join(w[0] for w in rest["name"].split()[:2]).upper()
     logo = ""
     if rest.get("logo"):
-        logo = f'<img class="logo" src="{html.escape(rest["logo"])}" alt="" onload="this.previousElementSibling.hidden=true" onerror="this.remove()">'
+        cls = "logo chip" if rest.get("chip") else "logo"
+        logo = f'<img class="{cls}" src="{html.escape(rest["logo"])}" alt="" onload="this.previousElementSibling.style.display=&#39;none&#39;" onerror="this.remove()">'
     return f"""
         <div class="card">
             <h2><span class="badge">{html.escape(initials)}</span>{logo}{name}</h2>
@@ -215,6 +216,7 @@ def get_menu():
         .grid .card {{ margin-bottom: 20px; }}
         .badge {{ display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #2c3e50; color: #8fbde3; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }}
         .logo {{ width: auto; height: 28px; max-width: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }}
+        .logo.chip {{ background: #f4f1ea; border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }}
         @media (min-width: 900px) {{ .grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
         .updated {{ color: #666; font-size: 0.85rem; margin-top: -8px; }}
         .standard {{ color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }}
