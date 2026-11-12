@@ -183,7 +183,7 @@ def build_card(rest, today):
     initials = "".join(w[0] for w in rest["name"].split()[:2]).upper()
     logo = ""
     if rest.get("logo"):
-        logo = f'<img class="logo" src="{html.escape(rest["logo"])}" alt="" onerror="this.remove()">'
+        logo = f'<img class="logo" src="{html.escape(rest["logo"])}" alt="" onload="this.previousElementSibling.hidden=true" onerror="this.remove()">'
     return f"""
         <div class="card">
             <h2><span class="badge">{html.escape(initials)}</span>{logo}{name}</h2>
@@ -214,7 +214,6 @@ def get_menu():
         .grid .card {{ margin-bottom: 20px; }}
         .badge {{ display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #e7eef6; color: #0056b3; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }}
         .logo {{ width: 28px; height: 28px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }}
-        .card h2 .badge + .logo {{ display: none; }}
         @media (min-width: 900px) {{ .grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
         .updated {{ color: #666; font-size: 0.85rem; margin-top: -8px; }}
         .standard {{ color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }}
