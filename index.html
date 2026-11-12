@@ -14,6 +14,9 @@
         .header { text-align: center; margin-bottom: 30px; }
         .grid { display: grid; grid-template-columns: 1fr; gap: 0 20px; max-width: 1200px; margin: 0 auto; }
         .grid .card { margin-bottom: 20px; }
+        .badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #e7eef6; color: #0056b3; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }
+        .logo { width: 28px; height: 28px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }
+        .card h2 .badge + .logo { display: none; }
         @media (min-width: 900px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
         .updated { color: #666; font-size: 0.85rem; margin-top: -8px; }
         .standard { color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
@@ -23,47 +26,47 @@
     <div class="header">
         <h1>🍴 Lunch Marievik</h1>
         <p>Torsdag 12 Nov 2026</p>
-        <p class="updated">Uppdaterad 12 Nov 2026 kl 13:01</p>
+        <p class="updated">Uppdaterad 12 Nov 2026 kl 13:36</p>
     </div>
 <div class="grid">
         <div class="card">
-            <h2>BankOmat Seaside</h2>
+            <h2><span class="badge">BS</span>BankOmat Seaside</h2>
             <ul><li>BIFF Á LA LINDSTRÖM</li><li>med rödvinssås, persiljasmör, saltgurka och stekt potatis</li><li>KALOPSGRYTA</li><li>med rödbetor och kokt potatis</li><li>STEKT KALVLEVER</li><li>CITRON- OCH VITVINSPOCHERAD GÖSFILÉ</li><li>med gräslökssås, spenat, citron och kokt potatis</li><li>DAGENS PASTA</li><li>Pasta fläskfilé med pepparsås och champinjoner</li></ul>
             <a href="https://restaurangbankomat.se/lunch/" class="btn">Visa meny</a>
         </div>
         
         <div class="card">
-            <h2>GHB German Beer Hall</h2>
+            <h2><span class="badge">GG</span>GHB German Beer Hall</h2>
             <ul><li>Isterband med dillstuvad potatis och rödbetor.</li><li>Kycklingspett serveras med ris, tzatziki, rödvinssås och grön sparris.</li><li>Strömmingsfilé med skirat smör, potatismos, gröna ärtor och rårörda lingon.</li><li>Pasta Alfredo med friterad kyckling.</li><li>Halloumiburgare med chipotlemajonnäs, sallad, rödlök, gurka, tomat, pommes, coleslaw och saltgurka.</li><li>Falafel med pommes och hummus.</li></ul>
             <a href="https://www.kvartersmenyn.se/index.php/rest/16965" class="btn">Visa meny</a>
         </div>
         
         <div class="card">
-            <h2>Tant Maja &amp; Fröken Emilia</h2>
+            <h2><span class="badge">TM</span>Tant Maja &amp; Fröken Emilia</h2>
             <ul><li>Mirza Ghasemi</li><li>Köttbullar med potatismos,gräddsås och limgonröra</li><li>Zereshk polo(saffran kyckling)</li><li>Gormehsabzi</li><li>Kebab Tabei</li><li>Kukusabzi</li><li>Dolmar alt.veg</li><li>Lasagne al forno alt,veg</li><li>Pasta bolognese</li><li>Pasta carbonara</li><li>Tryffel pasta</li></ul>
             <a href="https://www.tantmajaochfrokenemilia.se/lunch-meny" class="btn">Visa meny</a>
         </div>
         
         <div class="card">
-            <h2>Indian Garden</h2>
+            <h2><span class="badge">IG</span><img class="logo" src="https://indiangarden.nu/favicon.ico" alt="" onerror="this.remove()">Indian Garden</h2>
             <ul><li>Kyckling Tikka Butter Masala</li><li>Mixed Kyckling Tikka Sizzlar</li><li>Tandoori Kyckling Achari Karai</li><li>Kyckling Bashanti</li><li>Palak Paneer</li><li>Lamm Sambal</li><li>Nordic Salmon Mango Sesame</li><li>Mix Vegetable Curry (Vegan/ Vegetarisk)</li><li>Mixed Thali</li></ul><p class='note'>Samma lunchrätter varje vardag, 11–14.</p>
             <a href="https://indiangarden.nu/locations/liljeholmen" class="btn">Visa meny</a>
         </div>
         
         <div class="card">
-            <h2>Haandi curry &amp; streetfood</h2>
+            <h2><span class="badge">HC</span><img class="logo" src="https://haandi.se/favicon.ico" alt="" onerror="this.remove()">Haandi curry &amp; streetfood</h2>
             <ul><li>Chicken Tikka Butter Masala (Mild)</li><li>Klassisk gryta med kycklingfilé, krossade cashewnötter, lök,</li><li>grädde och smörfrästa kryddor</li><li>129:</li><li>Chicken Karai (Stark)</li><li>Gryta med kycklingfilé tillagad i currysås med paprika, lök, ingefära</li><li>tomat och färsk koriander</li><li>Lamm Balti (Medel starkt)</li><li>Gryta med lammbitar i masalasås och currysås med tomat,koriander</li><li>och bengaliska kryddor.</li><li>139:</li><li>Mahananda River curry (Mild)</li><li>Lax med kokosås och citron</li><li>Palak Panir (Medel starkt)</li><li>Hemgjord färskost tillagad med bladspenat,tomat,vitlök i currysås.</li></ul><p class='note'>Menyn är en PDF från juni 2025. Kontrollera att den fortfarande gäller.</p>
             <a href="https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf" class="btn">Visa meny</a>
         </div>
         
         <div class="card">
-            <h2>Marrakech</h2>
+            <h2><span class="badge">M</span><img class="logo" src="https://marrakechrestaurang.se/favicon.png" alt="" onerror="this.remove()">Marrakech</h2>
             <p class='note'>Lunchbuffé efter vikt, 19,90 kr per hekto, mån–fre 10.30–13.30. Bröd och kaffe ingår.</p>
             <a href="https://marrakechrestaurang.se/meny" class="btn">Visa meny</a>
         </div>
         
         <div class="card">
-            <h2>Mackverket</h2>
+            <h2><span class="badge">M</span>Mackverket</h2>
             <p class='note'>Surdegsmackor, inte en dagsmeny. Samma sortiment varje dag.</p>
             <a href="https://www.mackverket.se/surdegsmackor-stockholm/" class="btn">Visa meny</a>
         </div>
