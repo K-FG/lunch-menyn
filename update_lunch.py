@@ -213,7 +213,7 @@ def get_menu():
         .grid {{ display: grid; grid-template-columns: 1fr; gap: 0 20px; max-width: 1200px; margin: 0 auto; }}
         .grid .card {{ margin-bottom: 20px; }}
         .badge {{ display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #e7eef6; color: #0056b3; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }}
-        .logo {{ width: auto; height: 28px; max-width: 72px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }}
+        .logo {{ width: auto; height: 28px; max-width: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; background: #5b6b7b; border-radius: 6px; padding: 4px 6px; box-sizing: content-box; }}
         @media (min-width: 900px) {{ .grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
         .updated {{ color: #666; font-size: 0.85rem; margin-top: -8px; }}
         .standard {{ color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }}
