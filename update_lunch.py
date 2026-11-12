@@ -210,19 +210,19 @@ def get_menu():
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {{ font-family: -apple-system, sans-serif; padding: 15px; background: #161615; color: #ecebe6; }}
-        .card {{ background: #22221f; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border-left: 5px solid #8fbde3; }}
-        h2 {{ margin: 0 0 10px 0; font-size: 1.2rem; color: #8fbde3; }}
+        body {{ font-family: -apple-system, sans-serif; padding: 15px; background: #f8f9fa; color: #333; }}
+        .card {{ background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 5px solid #007bff; }}
+        h2 {{ margin: 0 0 10px 0; font-size: 1.2rem; color: #0056b3; }}
         ul {{ padding-left: 20px; margin: 0; }}
         li {{ margin-bottom: 8px; font-size: 0.95rem; }}
-        .note {{ color: #a6a39a; font-size: 0.9rem; }}
-        .btn {{ display: block; background: #2b5f8f; color: #ecebe6; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }}
+        .note {{ color: #666; font-size: 0.9rem; }}
+        .btn {{ display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }}
         .header {{ text-align: center; margin-bottom: 30px; }}
-        :root {{ color-scheme: dark; }}
+        :root {{ color-scheme: light; }}
         .grid {{ display: grid; grid-template-columns: 1fr; gap: 0 20px; max-width: 1200px; margin: 0 auto; }}
         .grid .card {{ margin-bottom: 20px; }}
-        .card {{ border-left-color: var(--brand, #8fbde3); }}
-        .card h2 {{ color: var(--fg-h, #ecebe6); }}
+        .card {{ border-left-color: var(--brand, #007bff); }}
+        .card h2 {{ color: #222; }}
         .card .btn {{ background: var(--brand, #2b5f8f); color: #fff; }}
         .wordmark {{ display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 6px; background: var(--brand, #4a4a48); color: #fff; font-weight: 800; letter-spacing: .08em; font-size: .72rem; text-transform: uppercase; margin-right: 8px; vertical-align: middle; white-space: nowrap; box-shadow: inset 0 -6px 0 rgba(255,255,255,.12); }}
         .wordmark.plain {{ text-transform: none; letter-spacing: .01em; font-size: .85rem; font-weight: 800; }}
