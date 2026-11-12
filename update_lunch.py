@@ -31,7 +31,7 @@ RESTAURANTS = [
     {"name": "Tant Maja & Fröken Emilia", "brand": "#2f6f6a", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images", "logo": "https://www.tantmajaochfrokenemilia.se/tenants/tantmaja/logo.jpg"},
     {"name": "Indian Garden", "brand": "#8a3b1f", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block", "logo": "https://indiangarden.nu/image/catalog/Background/logo.png", "chip": True},
     {"name": "Haandi curry & streetfood", "brand": "#890405", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf", "logo": "https://haandi.se/favicon.ico", "chip": True},
-    {"name": "Marrakech", "brand": "#7a5a1e", "url": "https://marrakechrestaurang.se/meny", "source": "info", "logo": "https://marrakechrestaurang.se/assets/marrakech-logo-CE9fafJE.png",
+    {"name": "Marrakech", "brand": "#2a1f14", "url": "https://marrakechrestaurang.se/meny", "source": "info", "logo": "https://marrakechrestaurang.se/assets/marrakech-logo-CE9fafJE.png",
      "info": "Lunchbuffé efter vikt, 19,90 kr per hekto, mån–fre 10.30–13.30. Bröd och kaffe ingår."},
     {"name": "Mackverket", "brand": "#32373c", "url": "https://www.mackverket.se/surdegsmackor-stockholm/", "source": "info",
      "info": "Surdegsmackor, inte en dagsmeny. Samma sortiment varje dag."},
@@ -219,7 +219,8 @@ def get_menu():
         .card .btn {{ background: var(--brand, #2b5f8f); color: #fff; }}
         .badge {{ display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--brand, #2c3e50); color: #fff; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }}
         .logo {{ width: auto; height: 28px; max-width: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }}
-        .logo.chip {{ background: #f4f1ea; border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }}
+        .logo {{ background: var(--brand, #2c3e50); border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }}
+        .logo.chip {{ background: #f4f1ea; }}
         @media (min-width: 900px) {{ .grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
         .updated {{ color: #666; font-size: 0.85rem; margin-top: -8px; }}
         .standard {{ color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }}
