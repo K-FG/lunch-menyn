@@ -4,16 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: -apple-system, sans-serif; padding: 15px; background: #f8f9fa; color: #333; }
-        .card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 5px solid #007bff; }
-        h2 { margin: 0 0 10px 0; font-size: 1.2rem; color: #0056b3; }
+        body { font-family: -apple-system, sans-serif; padding: 15px; background: #161615; color: #ecebe6; }
+        .card { background: #22221f; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border-left: 5px solid #8fbde3; }
+        h2 { margin: 0 0 10px 0; font-size: 1.2rem; color: #8fbde3; }
         ul { padding-left: 20px; margin: 0; }
         li { margin-bottom: 8px; font-size: 0.95rem; }
-        .note { color: #666; font-size: 0.9rem; }
-        .btn { display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }
+        .note { color: #a6a39a; font-size: 0.9rem; }
+        .btn { display: block; background: #2b5f8f; color: #ecebe6; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }
         .header { text-align: center; margin-bottom: 30px; }
+        :root { color-scheme: dark; }
         .grid { display: grid; grid-template-columns: 1fr; gap: 0 20px; max-width: 1200px; margin: 0 auto; }
         .grid .card { margin-bottom: 20px; }
+        .card { border-left-color: var(--brand, #8fbde3); }
+        .card h2 { color: var(--fg-h, #ecebe6); }
+        .card .btn { background: var(--brand, #2b5f8f); color: #fff; }
+        .wordmark { display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 6px; background: var(--brand, #4a4a48); color: #fff; font-weight: 800; letter-spacing: .08em; font-size: .72rem; text-transform: uppercase; margin-right: 8px; vertical-align: middle; white-space: nowrap; box-shadow: inset 0 -6px 0 rgba(255,255,255,.12); }
+        .wordmark.plain { text-transform: none; letter-spacing: .01em; font-size: .85rem; font-weight: 800; }
+        .wordmark.serif { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; letter-spacing: 0; font-size: .85rem; text-transform: none; }
+        .badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--brand, #2c3e50); color: #fff; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }
+        .logo { width: auto; height: 28px; max-width: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }
+        .logo { background: var(--brand, #2c3e50); border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }
+        .logo.chip { background: #f4f1ea; }
         @media (min-width: 900px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
         .updated { color: #666; font-size: 0.85rem; margin-top: -8px; }
         .standard { color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
@@ -23,47 +34,47 @@
     <div class="header">
         <h1>🍴 Lunch Marievik</h1>
         <p>Torsdag 12 Nov 2026</p>
-        <p class="updated">Uppdaterad 12 Nov 2026 kl 13:01</p>
+        <p class="updated">Uppdaterad 12 Nov 2026 kl 18:30</p>
     </div>
 <div class="grid">
-        <div class="card">
-            <h2>BankOmat Seaside</h2>
+        <div class="card" style="--brand: #4a4a48">
+            <h2><span class="wordmark plain">BankOmat</span>BankOmat Seaside</h2>
             <ul><li>BIFF Á LA LINDSTRÖM</li><li>med rödvinssås, persiljasmör, saltgurka och stekt potatis</li><li>KALOPSGRYTA</li><li>med rödbetor och kokt potatis</li><li>STEKT KALVLEVER</li><li>CITRON- OCH VITVINSPOCHERAD GÖSFILÉ</li><li>med gräslökssås, spenat, citron och kokt potatis</li><li>DAGENS PASTA</li><li>Pasta fläskfilé med pepparsås och champinjoner</li></ul>
             <a href="https://restaurangbankomat.se/lunch/" class="btn">Visa meny</a>
         </div>
         
-        <div class="card">
-            <h2>GHB German Beer Hall</h2>
+        <div class="card" style="--brand: #b7791f">
+            <h2><span class="badge">GG</span><img class="logo" src="https://www.kvmcdn.se/images/logos_small/16965.jpg" alt="" onload="this.previousElementSibling.style.display=&#39;none&#39;" onerror="this.remove()">GHB German Beer Hall</h2>
             <ul><li>Isterband med dillstuvad potatis och rödbetor.</li><li>Kycklingspett serveras med ris, tzatziki, rödvinssås och grön sparris.</li><li>Strömmingsfilé med skirat smör, potatismos, gröna ärtor och rårörda lingon.</li><li>Pasta Alfredo med friterad kyckling.</li><li>Halloumiburgare med chipotlemajonnäs, sallad, rödlök, gurka, tomat, pommes, coleslaw och saltgurka.</li><li>Falafel med pommes och hummus.</li></ul>
             <a href="https://www.kvartersmenyn.se/index.php/rest/16965" class="btn">Visa meny</a>
         </div>
         
-        <div class="card">
-            <h2>Tant Maja &amp; Fröken Emilia</h2>
+        <div class="card" style="--brand: #2f6f6a">
+            <h2><span class="badge">TM</span><img class="logo" src="logos/tant-maja.jpg" alt="" onload="this.previousElementSibling.style.display=&#39;none&#39;" onerror="this.remove()">Tant Maja &amp; Fröken Emilia</h2>
             <ul><li>Mirza Ghasemi</li><li>Köttbullar med potatismos,gräddsås och limgonröra</li><li>Zereshk polo(saffran kyckling)</li><li>Gormehsabzi</li><li>Kebab Tabei</li><li>Kukusabzi</li><li>Dolmar alt.veg</li><li>Lasagne al forno alt,veg</li><li>Pasta bolognese</li><li>Pasta carbonara</li><li>Tryffel pasta</li></ul>
             <a href="https://www.tantmajaochfrokenemilia.se/lunch-meny" class="btn">Visa meny</a>
         </div>
         
-        <div class="card">
-            <h2>Indian Garden</h2>
+        <div class="card" style="--brand: #8a3b1f">
+            <h2><span class="badge">IG</span><img class="logo chip" src="https://indiangarden.nu/image/catalog/Background/logo.png" alt="" onload="this.previousElementSibling.style.display=&#39;none&#39;" onerror="this.remove()">Indian Garden</h2>
             <ul><li>Kyckling Tikka Butter Masala</li><li>Mixed Kyckling Tikka Sizzlar</li><li>Tandoori Kyckling Achari Karai</li><li>Kyckling Bashanti</li><li>Palak Paneer</li><li>Lamm Sambal</li><li>Nordic Salmon Mango Sesame</li><li>Mix Vegetable Curry (Vegan/ Vegetarisk)</li><li>Mixed Thali</li></ul><p class='note'>Samma lunchrätter varje vardag, 11–14.</p>
             <a href="https://indiangarden.nu/locations/liljeholmen" class="btn">Visa meny</a>
         </div>
         
-        <div class="card">
-            <h2>Haandi curry &amp; streetfood</h2>
-            <ul><li>Chicken Tikka Butter Masala (Mild)</li><li>Klassisk gryta med kycklingfilé, krossade cashewnötter, lök,</li><li>grädde och smörfrästa kryddor</li><li>129:</li><li>Chicken Karai (Stark)</li><li>Gryta med kycklingfilé tillagad i currysås med paprika, lök, ingefära</li><li>tomat och färsk koriander</li><li>Lamm Balti (Medel starkt)</li><li>Gryta med lammbitar i masalasås och currysås med tomat,koriander</li><li>och bengaliska kryddor.</li><li>139:</li><li>Mahananda River curry (Mild)</li><li>Lax med kokosås och citron</li><li>Palak Panir (Medel starkt)</li><li>Hemgjord färskost tillagad med bladspenat,tomat,vitlök i currysås.</li></ul><p class='note'>Menyn är en PDF från juni 2025. Kontrollera att den fortfarande gäller.</p>
+        <div class="card" style="--brand: #890405">
+            <h2><span class="badge">HC</span><img class="logo chip" src="https://haandi.se/favicon.ico" alt="" onload="this.previousElementSibling.style.display=&#39;none&#39;" onerror="this.remove()">Haandi curry &amp; streetfood</h2>
+            <ul><li>Chicken Tikka Butter Masala (Mild)</li><li>Klassisk gryta med kycklingfilé, krossade cashewnötter, lök,</li><li>grädde och smörfrästa kryddor</li><li>Chicken Karai (Stark)</li><li>Gryta med kycklingfilé tillagad i currysås med paprika, lök, ingefära</li><li>tomat och färsk koriander</li><li>Lamm Balti (Medel starkt)</li><li>Gryta med lammbitar i masalasås och currysås med tomat,koriander</li><li>och bengaliska kryddor.</li><li>Mahananda River curry (Mild)</li><li>Lax med kokosås och citron</li><li>Palak Panir (Medel starkt)</li><li>Hemgjord färskost tillagad med bladspenat,tomat,vitlök i currysås.</li><li>Mixed Daal (Medel starkt)</li><li>Blandade linser tillagade i currysås med, sambal, vitlök ,färsk koriander</li></ul><p class='note'>Menyn är en PDF från juni 2025. Kontrollera att den fortfarande gäller.</p>
             <a href="https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf" class="btn">Visa meny</a>
         </div>
         
-        <div class="card">
-            <h2>Marrakech</h2>
+        <div class="card" style="--brand: #2a1f14">
+            <h2><span class="badge">M</span><img class="logo" src="https://marrakechrestaurang.se/assets/marrakech-logo-CE9fafJE.png" alt="" onload="this.previousElementSibling.style.display=&#39;none&#39;" onerror="this.remove()">Marrakech</h2>
             <p class='note'>Lunchbuffé efter vikt, 19,90 kr per hekto, mån–fre 10.30–13.30. Bröd och kaffe ingår.</p>
             <a href="https://marrakechrestaurang.se/meny" class="btn">Visa meny</a>
         </div>
         
-        <div class="card">
-            <h2>Mackverket</h2>
+        <div class="card" style="--brand: #32373c">
+            <h2><span class="badge">M</span>Mackverket</h2>
             <p class='note'>Surdegsmackor, inte en dagsmeny. Samma sortiment varje dag.</p>
             <a href="https://www.mackverket.se/surdegsmackor-stockholm/" class="btn">Visa meny</a>
         </div>
