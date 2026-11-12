@@ -26,14 +26,14 @@ FIRECRAWL_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
 
 # Restaurangerna från https://bit.ly/lunchwsp (sites.google.com/view/lunchwsp)
 RESTAURANTS = [
-    {"name": "BankOmat Seaside", "url": "https://restaurangbankomat.se/lunch/", "source": "html"},
-    {"name": "GHB German Beer Hall", "url": "https://www.kvartersmenyn.se/index.php/rest/16965", "source": "firecrawl"},
-    {"name": "Tant Maja & Fröken Emilia", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images", "logo": "https://www.tantmajaochfrokenemilia.se/tenants/tantmaja/logo.jpg"},
-    {"name": "Indian Garden", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block", "logo": "https://indiangarden.nu/image/catalog/Background/logo.png", "chip": True},
-    {"name": "Haandi curry & streetfood", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf", "logo": "https://haandi.se/favicon.ico", "chip": True},
-    {"name": "Marrakech", "url": "https://marrakechrestaurang.se/meny", "source": "info", "logo": "https://marrakechrestaurang.se/assets/marrakech-logo-CE9fafJE.png",
+    {"name": "BankOmat Seaside", "brand": "#4a4a48", "url": "https://restaurangbankomat.se/lunch/", "source": "html"},
+    {"name": "GHB German Beer Hall", "brand": "#b7791f", "url": "https://www.kvartersmenyn.se/index.php/rest/16965", "source": "firecrawl"},
+    {"name": "Tant Maja & Fröken Emilia", "brand": "#2f6f6a", "url": "https://www.tantmajaochfrokenemilia.se/lunch-meny", "source": "firecrawl_images", "logo": "https://www.tantmajaochfrokenemilia.se/tenants/tantmaja/logo.jpg"},
+    {"name": "Indian Garden", "brand": "#8a3b1f", "url": "https://indiangarden.nu/locations/liljeholmen", "source": "firecrawl_block", "logo": "https://indiangarden.nu/image/catalog/Background/logo.png", "chip": True},
+    {"name": "Haandi curry & streetfood", "brand": "#890405", "url": "https://haandi.se/wp-content/uploads/2025/06/Lunchmeny.pdf", "source": "pdf", "logo": "https://haandi.se/favicon.ico", "chip": True},
+    {"name": "Marrakech", "brand": "#7a5a1e", "url": "https://marrakechrestaurang.se/meny", "source": "info", "logo": "https://marrakechrestaurang.se/assets/marrakech-logo-CE9fafJE.png",
      "info": "Lunchbuffé efter vikt, 19,90 kr per hekto, mån–fre 10.30–13.30. Bröd och kaffe ingår."},
-    {"name": "Mackverket", "url": "https://www.mackverket.se/surdegsmackor-stockholm/", "source": "info",
+    {"name": "Mackverket", "brand": "#32373c", "url": "https://www.mackverket.se/surdegsmackor-stockholm/", "source": "info",
      "info": "Surdegsmackor, inte en dagsmeny. Samma sortiment varje dag."},
 ]
 
@@ -186,7 +186,7 @@ def build_card(rest, today):
         cls = "logo chip" if rest.get("chip") else "logo"
         logo = f'<img class="{cls}" src="{html.escape(rest["logo"])}" alt="" onload="this.previousElementSibling.style.display=&#39;none&#39;" onerror="this.remove()">'
     return f"""
-        <div class="card">
+        <div class="card" style="--brand: {rest.get('brand', '#1f4e79')}">
             <h2><span class="badge">{html.escape(initials)}</span>{logo}{name}</h2>
             {body}
             <a href="{url}" class="btn">Visa meny</a>
@@ -214,7 +214,10 @@ def get_menu():
         :root {{ color-scheme: dark; }}
         .grid {{ display: grid; grid-template-columns: 1fr; gap: 0 20px; max-width: 1200px; margin: 0 auto; }}
         .grid .card {{ margin-bottom: 20px; }}
-        .badge {{ display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #2c3e50; color: #8fbde3; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }}
+        .card {{ border-left-color: var(--brand, #8fbde3); }}
+        .card h2 {{ color: var(--fg-h, #ecebe6); }}
+        .card .btn {{ background: var(--brand, #2b5f8f); color: #fff; }}
+        .badge {{ display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--brand, #2c3e50); color: #fff; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; }}
         .logo {{ width: auto; height: 28px; max-width: 80px; object-fit: contain; margin-right: 8px; vertical-align: middle; position: relative; }}
         .logo.chip {{ background: #f4f1ea; border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }}
         @media (min-width: 900px) {{ .grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
