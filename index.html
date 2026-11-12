@@ -12,6 +12,9 @@
         .note { color: #666; font-size: 0.9rem; }
         .btn { display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }
         .header { text-align: center; margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 0 20px; max-width: 1200px; margin: 0 auto; }
+        .grid .card { margin-bottom: 20px; }
+        @media (min-width: 900px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
         .updated { color: #666; font-size: 0.85rem; margin-top: -8px; }
         .standard { color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }
     </style>
@@ -20,9 +23,9 @@
     <div class="header">
         <h1>🍴 Lunch Marievik</h1>
         <p>Torsdag 12 Nov 2026</p>
-        <p class="updated">Uppdaterad 12 Nov 2026 kl 12:48</p>
+        <p class="updated">Uppdaterad 12 Nov 2026 kl 13:01</p>
     </div>
-
+<div class="grid">
         <div class="card">
             <h2>BankOmat Seaside</h2>
             <ul><li>BIFF Á LA LINDSTRÖM</li><li>med rödvinssås, persiljasmör, saltgurka och stekt potatis</li><li>KALOPSGRYTA</li><li>med rödbetor och kokt potatis</li><li>STEKT KALVLEVER</li><li>CITRON- OCH VITVINSPOCHERAD GÖSFILÉ</li><li>med gräslökssås, spenat, citron och kokt potatis</li><li>DAGENS PASTA</li><li>Pasta fläskfilé med pepparsås och champinjoner</li></ul>
@@ -64,4 +67,4 @@
             <p class='note'>Surdegsmackor, inte en dagsmeny. Samma sortiment varje dag.</p>
             <a href="https://www.mackverket.se/surdegsmackor-stockholm/" class="btn">Visa meny</a>
         </div>
-        <p class='standard'>Menyerna hämtas automatiskt från restaurangernas egna sidor vardagar kl 09:00. Kontrollera alltid hos restaurangen innan du går dit. Vi ansvarar inte för felaktigheter i menyerna. Klicka på "Visa meny" för att se hela menyn på restaurangens sida.</p></body></html>
+        </div><p class='standard'>Menyerna hämtas automatiskt från restaurangernas egna sidor vardagar kl 09:00. Kontrollera alltid hos restaurangen innan du går dit. Vi ansvarar inte för felaktigheter i menyerna. Klicka på "Visa meny" för att se hela menyn på restaurangens sida.</p></body></html>

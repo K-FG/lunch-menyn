@@ -206,6 +206,9 @@ def get_menu():
         .note {{ color: #666; font-size: 0.9rem; }}
         .btn {{ display: block; background: #007bff; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }}
         .header {{ text-align: center; margin-bottom: 30px; }}
+        .grid {{ display: grid; grid-template-columns: 1fr; gap: 0 20px; max-width: 1200px; margin: 0 auto; }}
+        .grid .card {{ margin-bottom: 20px; }}
+        @media (min-width: 900px) {{ .grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }} }}
         .updated {{ color: #666; font-size: 0.85rem; margin-top: -8px; }}
         .standard {{ color: #666; font-size: 0.85rem; text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; }}
     </style>
@@ -217,7 +220,7 @@ def get_menu():
         <p class="updated">Uppdaterad {now.strftime('%d %b %Y kl %H:%M')}</p>
     </div>
 """
-    cards = "".join(build_card(r, today) for r in RESTAURANTS)
+    cards = '<div class="grid">' + "".join(build_card(r, today) for r in RESTAURANTS) + "</div>"
     standard = (
         "<p class='standard'>Menyerna hämtas automatiskt från restaurangernas egna sidor "
         "vardagar kl 09:00. Kontrollera alltid hos restaurangen innan du går dit. "

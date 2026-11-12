@@ -1,7 +1,7 @@
 name: Update Lunch Menu
 on:
   schedule:
-    - cron: '0 8 * * 1-5' # Körs kl 09:00 svensk tid, mån-fre
+    - cron: '0 7 * * 1-5' # Körs kl 08:00 svensk tid vintertid (07:00 UTC), mån-fre. Byt till '0 6 * * 1-5' under sommartid.
   workflow_dispatch: # Gör att du kan starta den manuellt
 
 jobs:
