@@ -65,7 +65,7 @@ def fetch_firecrawl(url):
     if not FIRECRAWL_KEY:
         raise RuntimeError("FIRECRAWL_API_KEY saknas")
     r = requests.post(
-        "https://api.firecrawl.dev/v1/scrape",
+        "https://api.firecrawl.dev/v2/scrape",
         headers={"Authorization": f"Bearer {FIRECRAWL_KEY}"},
         json={"url": url, "formats": ["markdown"], "onlyMainContent": True},
         timeout=120,
